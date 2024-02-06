@@ -2,11 +2,11 @@ spring:
   application:
     name: product-service
   datasource:
-    url: jdbc:mysql://localhost:3306/distibuted_txn?useSSL=false
+    url: jdbc:mysql://localhost:3306/distibuted_txn?useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: my-secret-pw
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate.ddl-auto: update
   rabbitmq:
     host: localhost
@@ -32,5 +32,6 @@ logging:
   level:
     org.springframework.data: ERROR
     com.netflix: ERROR
+    root: info
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss:SSS} [S=${APP_NAME:-}] [T=%X{traceId}] %-5level %logger{36}.%L %msg%n'

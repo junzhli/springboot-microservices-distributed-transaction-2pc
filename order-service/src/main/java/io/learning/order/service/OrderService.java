@@ -62,10 +62,10 @@ public class OrderService {
             throw new InSufficientFundException("Insufficient funds. Balance: " + account.getBalance() + ", orderAmount:  " + totalAmount);
         }
         eventPublisher.publishEvent(new OrderTransactionEvent(transaction.getId()));
-        int number = random.nextInt();
-        if (number % 2 == 0) {
-            throw new OrderProcessingException("Error while processing your order");
-        }
+//        int number = random.nextInt();
+//        if (number % 2 == 0) {
+//            throw new OrderProcessingException("Error while processing your order");
+//        }
         return savedOrder;
     }
 

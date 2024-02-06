@@ -26,14 +26,14 @@ public class OrderTransactionListener implements TransactionListener<OrderTransa
     @Override
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handleEvent(OrderTransactionEvent event) throws OrderProcessingException {
-        log.debug("Handling event before commit: {}", event);
+        log.info("Handling event before commit: {}", event);
         eventBus.sendEvent(event);
     }
 
     @Override
     @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
     public void handleAfterRollback(OrderTransactionEvent event) {
-        log.debug("Handling event after rollback : {}", event);
+        log.info("Handling event after rollback : {}", event);
         restTemplate.put(
                 "http://transaction-server/transactions/{id}/finish/{status}",
                 null,
@@ -44,7 +44,7 @@ public class OrderTransactionListener implements TransactionListener<OrderTransa
     @Override
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleAfterCompletion(OrderTransactionEvent event) {
-        log.debug("Handling event after completion : {}", event);
+        log.info("Handling event after completion : {}", event);
         restTemplate.put(
                 "http://transaction-server/transactions/{id}/finish/{status}",
                 null,

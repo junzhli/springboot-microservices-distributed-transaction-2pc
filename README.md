@@ -13,9 +13,9 @@ Each microservice exposes REST API interfaces that can be accessed through OpenA
 
 ## Pre-Requisites
  1. RabbitMQ
-    - Start RabbitMQ in Docker with command `docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 rabbitmq:3-management` [Learn more](https://hub.docker.com/_/rabbitmq)
+    - Start RabbitMQ in Docker with command `docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management` [Learn more](https://hub.docker.com/_/rabbitmq)
  2. MySQL Database
-    - Start MySQL in Docker with command `docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag` [Learn more](https://hub.docker.com/_/mysql)
+    - Start MySQL in Docker with command `docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql:latest (latest 8.x)` [Learn more](https://hub.docker.com/_/mysql)
 
 ## Usage
  1. Start `discovery-server`. Default port is 8761.

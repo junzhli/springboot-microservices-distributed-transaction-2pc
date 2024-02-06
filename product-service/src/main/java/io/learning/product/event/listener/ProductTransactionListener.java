@@ -29,7 +29,7 @@ public class ProductTransactionListener implements TransactionListener<ProductTr
     @Override
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handleEvent(ProductTransactionEvent event) throws ProductProcessingException {
-        log.debug("Handling event before commit: {}", event);
+        log.info("Handling event before commit: {}", event);
         eventBus.sendEvent(event);
 
         DistributedTransaction transaction = null;
@@ -38,12 +38,14 @@ public class ProductTransactionListener implements TransactionListener<ProductTr
             transaction = eventBus.receiveTransaction(event.getTransactionId());
             if (transaction == null) {
                 try {
+                    log.info("transaction is null");
                     TimeUnit.MILLISECONDS.sleep(10);
                 } catch (InterruptedException ex) {
                     log.error("Error while receiving transaction for: {}. Cause: {}", event.getTransactionId(), ex);
                 }
                 --count;
             } else {
+                log.info("transaction is not null");
                 break;
             }
         }
@@ -56,7 +58,7 @@ public class ProductTransactionListener implements TransactionListener<ProductTr
     @Override
     @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
     public void handleAfterRollback(ProductTransactionEvent event) {
-        log.debug("Handling event after rollback : {}", event);
+        log.info("Handling event after rollback : {}", event);
         restTemplate.put(
                 "http://transaction-server/transactions/{transactionId}/participants/{serviceId}/status/{status}",
                 null,
@@ -68,7 +70,7 @@ public class ProductTransactionListener implements TransactionListener<ProductTr
     @Override
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleAfterCompletion(ProductTransactionEvent event) {
-        log.debug("Handling event after completion : {}", event);
+        log.info("Handling event after completion : {}", event);
         restTemplate.put(
                 "http://transaction-server/transactions/{transactionId}/participants/{serviceId}/status/{status}",
                 null,
